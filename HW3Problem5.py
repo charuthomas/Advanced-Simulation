@@ -62,20 +62,32 @@ def runReplications(numReps, mean, sd, n, q):
 	for i in range(numReps):
 		generatePath(mean,sd,n,q)
 
-def checkWithinInterval(intervalTups, mean):
+def checkWithinInterval(intervalTups, numReps, mean):
 	"""
 	This function checks the fraction of confidence intervals, represented as tuples,
 	which contain the mean of the MA process
 
 	Args:
 		intervalTups: array of confidence intervals, likely generated from multiple replications
+		numReps: number of replications for experiment
 		mean: theoretical mean of MA process, usually the constant before the error terms
 
 	Returns:
 		meanFraction: float representing number of CIs that contain mean
 	"""
+	i = 0
+	for interval in intervalTups:
+		if interval[0] <= mean <= interval[1]:
+			i += 1
 
+	meanFraction = i / numReps
+	return meanFraction
 
 #runReplications(400, 0, 3, 10000, 3)
 
-generatePath(0,3,5,3)
+runReplications(3, 0, 3, 5, 3)
+cisWithin = checkWithinInterval(cis, 3, mu)
+ci_altsWithin = checkWithinInterval(ci_alts, 3, mu)
+
+print(cisWithin)
+print(ci_altsWithin)
