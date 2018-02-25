@@ -15,10 +15,6 @@ Examples:
 		xbar: ...
 		sd: ...
 		...
-
-Todo:
-	*Change sigma constant to correct theoretical value of asymptotic variance
-	*Take out test case and run full experiment (400 replications, 10K observations each)
 """
 import numpy, scipy.stats, statistics, math
 
@@ -30,7 +26,7 @@ ci_alts = []
 t_critical = scipy.stats.t.ppf(0.95,9999)
 z_critical = scipy.stats.norm.ppf(0.95)
 mu = 5
-sigma = 2
+sigma = math.sqrt(36)
 
 def generatePath(mean, sd, n, q):
 	"""
@@ -51,7 +47,7 @@ def generatePath(mean, sd, n, q):
 	xi = []
 	for i in range(n):
 		xi.append(5 + errors[i+q]+ 2/3*errors[i+q-1] + 1/3*errors[i+q-2])
-		print(str(i) + ": " + str(xi[i]))
+		#print(str(i) + ": " + str(xi[i]))
 
 	xbar = sum(xi) / float(len(xi))
 	sn = statistics.stdev(xi)
@@ -62,8 +58,8 @@ def generatePath(mean, sd, n, q):
 	sns.append(sn)
 	cis.append(ci)
 	ci_alts.append(ci_alt)
-	print("xbar: " + str(xbar))
-	print("sd: " + str(sn))
+	#print("xbar: " + str(xbar))
+	#print("sd: " + str(sn))
 	print("ci: " + str(ci))
 	print("ci alt: " + str(ci_alt))
 
@@ -105,14 +101,14 @@ def checkWithinInterval(intervalTups, numReps, mean=0):
 	meanFraction = i / numReps
 	return meanFraction
 
-# runReplications(400, 0, 3, 10000, 3)
-# cisWithin = checkWithinInterval(cis, 400, mu)
-# ci_altsWithin = checkWithinInterval(ci_alts, 400, mu)
+runReplications(400, 0, 3, 10000, 3)
+cisWithin = checkWithinInterval(cis, 400, mu)
+ci_altsWithin = checkWithinInterval(ci_alts, 400, mu)
 
 #TEST CASE: 3 replications, length of 5 on each path
-runReplications(3, 0, 3, 5, 3)
-cisWithin = checkWithinInterval(cis, 3, mu)
-ci_altsWithin = checkWithinInterval(ci_alts, 3, mu)
+# runReplications(3, 0, 3, 5, 3)
+# cisWithin = checkWithinInterval(cis, 3, mu)
+# ci_altsWithin = checkWithinInterval(ci_alts, 3, mu)
 
 print(cisWithin)
 print(ci_altsWithin)
