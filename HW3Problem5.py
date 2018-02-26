@@ -58,8 +58,8 @@ def generatePath(mean, sd, n, q):
 	sns.append(sn)
 	cis.append(ci)
 	ci_alts.append(ci_alt)
-	#print("xbar: " + str(xbar))
-	#print("sd: " + str(sn))
+	print("xbar: " + str(xbar))
+	print("sd: " + str(sn))
 	print("ci: " + str(ci))
 	print("ci alt: " + str(ci_alt))
 
